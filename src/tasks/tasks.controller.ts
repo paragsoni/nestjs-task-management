@@ -3,48 +3,66 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { SearchTaskDto } from './dto/search-task.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/auth/user.entity';
+import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('tasks')
+@UseGuards(AuthGuard())
 export class TasksController {
+  private readonly logger = new Logger('TaskController');
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  getTasks(@Query() searchTaskDto: SearchTaskDto): Promise<Task[]> {
-    return this.tasksService.getTasksBySearch(searchTaskDto);
+  getTasks(
+    @Query() searchTaskDto: SearchTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    // this.logger.verbose(`user:: ${JSON.stringify(user)} `);
+    // this.logger.debug(`user:: ${JSON.stringify(user)} `);
+    // this.logger.warn(`user:: ${JSON.stringify(user)} `);
+    // this.logger.error(`user:: ${JSON.stringify(user)} `);
+    return this.tasksService.getTasksBySearch(searchTaskDto, user);
   }
 
   @Post()
-  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.tasksService.createTask(createTaskDto);
+  createTask(
+    @Body() createTaskDto: CreateTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto, user);
   }
 
   @Get('/:id')
-  getTaskById(@Param('id') id: string): Promise<Task> {
-    return this.tasksService.getTaskById(id);
+  getTaskById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
+    return this.tasksService.getTaskById(id, user);
   }
 
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+    @GetUser() user: User,
   ): Promise<Task> {
     const { status } = updateTaskStatusDto;
-    return this.tasksService.updateTaskStatus(id, status);
+    return this.tasksService.updateTaskStatus(id, status, user);
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string): Promise<void> {
-    return this.tasksService.deleteTask(id);
+  deleteTask(@Param('id') id: string, @GetUser() user: User): Promise<void> {
+    return this.tasksService.deleteTask(id, user);
   }
 }
 

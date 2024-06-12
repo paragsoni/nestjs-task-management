@@ -4,29 +4,31 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskRepository } from './task.repository';
 import { ITaskStatus } from './tasks.model';
 import { SearchTaskDto } from './dto/search-task.dto';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class TasksService {
   constructor(private readonly taskRepository: TaskRepository) {}
 
-  getTasksBySearch(searchTaskDto: SearchTaskDto): Promise<Task[]> {
-    return this.taskRepository.getTasks(searchTaskDto);
+  getTasksBySearch(searchTaskDto: SearchTaskDto, user: User): Promise<Task[]> {
+    return this.taskRepository.getTasks(searchTaskDto, user);
   }
 
-  getTaskById(id: string): Promise<Task> {
-    return this.taskRepository.getTaskById(id);
+  getTaskById(id: string, user: User): Promise<Task> {
+    console.log(user);
+    return this.taskRepository.getTaskById(id, user);
   }
 
-  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.taskRepository.createTask(createTaskDto);
+  createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+    return this.taskRepository.createTask(createTaskDto, user);
   }
 
-  deleteTask(id: string): Promise<void> {
-    return this.taskRepository.deleteTask(id);
+  deleteTask(id: string, user: User): Promise<void> {
+    return this.taskRepository.deleteTask(id, user);
   }
 
-  updateTaskStatus(id: string, status: ITaskStatus): Promise<Task> {
-    return this.taskRepository.updateTaskStatus(id, status);
+  updateTaskStatus(id: string, status: ITaskStatus, user: User): Promise<Task> {
+    return this.taskRepository.updateTaskStatus(id, status, user);
   }
 }
 
