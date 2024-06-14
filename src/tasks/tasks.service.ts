@@ -4,7 +4,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskRepository } from './task.repository';
 import { ITaskStatus } from './tasks.model';
 import { SearchTaskDto } from './dto/search-task.dto';
-import { User } from 'src/auth/user.entity';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class TasksService {
