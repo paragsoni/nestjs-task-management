@@ -10,7 +10,7 @@ import { User } from '../auth/user.entity';
 export class TasksService {
   constructor(private readonly taskRepository: TaskRepository) {}
 
-  getTasksBySearch(searchTaskDto: SearchTaskDto, user: User): Promise<Task[]> {
+  getTasks(searchTaskDto: SearchTaskDto, user: User): Promise<Task[]> {
     return this.taskRepository.getTasks(searchTaskDto, user);
   }
 
@@ -49,7 +49,7 @@ export class TasksService {
     return this.tasks;
   }
 
-  getTasksBySearch(searchTaskDto: SearchTaskDto): ITask[] {
+  getTasks(searchTaskDto: SearchTaskDto): ITask[] {
     let tasks: ITask[] = this.tasks;
 
     const { search, status } = searchTaskDto;

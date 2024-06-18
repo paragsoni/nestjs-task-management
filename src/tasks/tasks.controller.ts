@@ -34,7 +34,7 @@ export class TasksController {
     // this.logger.debug(`user:: ${JSON.stringify(user)} `);
     // this.logger.warn(`user:: ${JSON.stringify(user)} `);
     // this.logger.error(`user:: ${JSON.stringify(user)} `);
-    return this.tasksService.getTasksBySearch(searchTaskDto, user);
+    return this.tasksService.getTasks(searchTaskDto, user);
   }
 
   @Post()
@@ -90,7 +90,7 @@ export class TasksController {
   @Get()
   async getTasks(@Query() searchTaskDto: SearchTaskDto): Promise<ITask[]> {
     if (Object.keys(searchTaskDto).length) {
-      return this.tasksService.getTasksBySearch(searchTaskDto);
+      return this.tasksService.getTasks(searchTaskDto);
     }
     return this.tasksService.getTasks();
   }

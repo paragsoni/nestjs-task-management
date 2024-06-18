@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { ITaskStatus } from '../tasks/tasks.model';
+import { ITaskStatus } from '../tasks.model';
 export class SearchTaskDto {
   @IsOptional()
   @IsString()
